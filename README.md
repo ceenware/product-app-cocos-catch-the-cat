@@ -1,4 +1,28 @@
-# 捉住小猫
+# 小猫围格挑战
+
+抖音开放平台小游戏项目。
+
+## 平台信息
+
+- 仓库：ceenads/product-app-cocos-catch-the-cat
+- 抖音小游戏名称：小猫围格挑战
+- AppID：ttadb7db0a33d375a902
+- 当前状态：基础信息已保存草稿，待上传版本和资质
+- 创建日期：2026-06-14
+- 开发引擎：普通小游戏引擎(Cocos/Laya/Egret/Godot/其他)
+- 平台图标：抖音上架材料/icon-600.png
+- 小游戏分类：休闲益智 / 解谜
+- 题材标签：动物
+
+## 软著信息
+
+- 软件全称：小猫围格挑战游戏软件 V1.0
+- 软件简称：小猫围格挑战
+
+## 提交记录
+
+2026-06-14：抖音开放平台创建流程已接受名称“小猫围格挑战”，生成 AppID `ttadb7db0a33d375a902`。
+2026-06-14：基础信息已在抖音开放平台保存为草稿，分类为“休闲益智 / 解谜”，题材标签为“动物”，图标使用 `抖音上架材料/icon-600.png`。
 
 [开始游戏](https://ganlvtech.github.io/phaser-catch-the-cat/)
 [![Build Status](https://www.travis-ci.org/ganlvtech/phaser-catch-the-cat.svg?branch=master)](https://www.travis-ci.org/ganlvtech/phaser-catch-the-cat)
