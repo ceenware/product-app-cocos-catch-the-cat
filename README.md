@@ -1,5 +1,7 @@
 # 小猫围格挑战
 
+站点地址：https://ceenware.github.io/product-app-cocos-catch-the-cat/
+
 抖音开放平台小游戏项目。
 
 ## 平台信息
