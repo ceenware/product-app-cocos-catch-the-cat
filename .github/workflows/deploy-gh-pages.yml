@@ -1,22 +1,60 @@
-name: Build and Deploy
+name: Publish Pages
+
 on:
   push:
-    branches:
-      - master
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-pages
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  publish:
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --openssl-legacy-provider
+      PUBLISH_DIR: dist
+      npm_config_cache: ${{ runner.temp }}/npm-cache
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to gh-pages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -f "$PUBLISH_DIR/index.html"
+          site="$(mktemp -d)"
+          rsync -a --delete "$PUBLISH_DIR"/ "$site"/
+          find "$site" -name '.DS_Store' -delete
+          touch "$site/.nojekyll"
+
+          cd "$site"
+          git init -q
+          git checkout -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish pages ${GITHUB_SHA::7}"
+          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages:gh-pages
+
+      - name: Cleanup workspace
+        if: always()
+        run: |
+          rm -rf node_modules dist "$RUNNER_TEMP/npm-cache"
